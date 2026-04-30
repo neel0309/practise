@@ -79,6 +79,7 @@ When we are working in a domain which needs us to maintain the keys
 of our own.
 ````
 
+TODO:
 
 # Look at the routing policy options — Simple, Weighted, Latency, Failover, Geolocation, Geoproximity, Multivalue, IP-based. For each, give a one-sentence real use case. The transcript explicitly assigns this as homework.
 # Why is CPU-based scaling alone often the wrong policy for production? Give two scenarios from the transcript (Uber-pattern, Medium-pattern, Black Friday) where you'd want a different approach.
