@@ -82,6 +82,55 @@ of our own.
 TODO:
 
 # Look at the routing policy options — Simple, Weighted, Latency, Failover, Geolocation, Geoproximity, Multivalue, IP-based. For each, give a one-sentence real use case. The transcript explicitly assigns this as homework.
+
+````
+Simple --> When we have a single endpoint.
+Weighted --> When we plan to roll out a new version of our application and
+we need to route 10% to v2 and 90% to v1.
+Latency --> When we want to direct the users to low latency region. Example 
+Mumbai -> ap-south1
+Failover --> when we want to send traffic to DR Region when primary region
+gores down
+Geolocation --> when we want users to view region specific content.
+Geoproximity --> When we want to shift users toward a cheaper or less loaded
+region.
+Multivalue --> Return multiple healthy IPs for basic load balancing with health checks
+IP-based --> Route traffic based on the IP ranges.
+````
 # Why is CPU-based scaling alone often the wrong policy for production? Give two scenarios from the transcript (Uber-pattern, Medium-pattern, Black Friday) where you'd want a different approach.
+
+````
+CPU scaling reacts to compute saturation and it stays low in other production issues like
+like I/O, queues, or external dependencies.
+
+Uber-pattern - Spikes of events pile up in queues/streams. Workers may be mostly waiting on I/O or external APIs → CPU stays low.
+we should put scaling on requests-per-second to drain the queue and keep latency bounded.
+
+Black Friday - Massive, known-in-advance spike
+we should Scheduled / predictive scaling or pre warm as when the traffic comes 
+we are prepared.
+````
 # What is a scheduled scaling policy and when does it beat dynamic scaling?
+
+````
+A scheduled scaling policy is when we pre define exact times to increase or decrease capacity
+instead of reacting to metrics like CPU.
+It beats dynamic scaling on the below pointers:
+1. Predictable traffic patterns
+2. Sudden spikes
+
+````
 # Explain the cooldown period and why a 100-second warmup matters (hint: think about what an instance is doing during user_data).
+
+````
+A cooldown period is basically a buffer time after a scaling action during which Auto Scaling waits before making another decision.
+When your Auto Scaling Group launches a new EC2 instance, it doesn’t immediately treat that instance as ready rather it waits till the 
+wwarm up completes.
+
+Why the 100-second warmup matters :
+
+1. OS boots
+2. packages install
+3. Gunicorn / app server starts
+4. app becomes reachable on port 8000
+````
